@@ -19,7 +19,7 @@ const config = {
   },
 }
 
-const env = 'dev'
+const env = 'prod'
 
 const reportDetails = {
   totalFileCount: 0,
