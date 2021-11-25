@@ -1,0 +1,22 @@
+{
+  "name": "alanwsmith.com-dead-link-finder",
+  "version": "1.0.0",
+  "description": "A dead link finder and reporter for alanwsmith.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanwsmith/alanwsmith.com-dead-link-finder.git"
+  },
+  "author": "Alan W. Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alanwsmith/alanwsmith.com-dead-link-finder/issues"
+  },
+  "homepage": "https://github.com/alanwsmith/alanwsmith.com-dead-link-finder#readme",
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}
