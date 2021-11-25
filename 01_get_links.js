@@ -48,19 +48,25 @@ fs.readdirSync(config[env].sourceDir).forEach((filename) => {
         reportDetails.siteFileCount += 1
 
         ///////////////////////////////////////////////////
-        // Find all the links via the regex match, and push
-        // the details onto the main array
-        const matches = matterObject.content.match(regex).forEach((link) => {
-          console.log(link)
-          reportDetails.linkCount += 1
-          const details = [
-            matterObject.data.id,
-            matterObject.data.date,
-            filename,
-            link,
-          ]
-          theLinks.push(details)
-        })
+        // Find all the links via the regex match
+        const matches = matterObject.content.match(regex)
+
+        ///////////////////////////////////////////////////
+        // If there are any links, setup the details and
+        // push them onto the main array
+        if (matches) {
+          matches.forEach((link) => {
+            console.log(link)
+            reportDetails.linkCount += 1
+            const details = [
+              matterObject.data.id,
+              matterObject.data.date,
+              filename,
+              link,
+            ]
+            theLinks.push(details)
+          })
+        }
       }
     }
   }
