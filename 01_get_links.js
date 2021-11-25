@@ -10,10 +10,12 @@ const config = {
   dev: {
     sourceDir: 'test_files',
     outputFile: 'data/01_test_list_of_files.tsv',
+    countFile: 'data/01_test_file_count.txt',
   },
   prod: {
     sourceDir: '/Users/alans/Dropbox/grimoire',
     outputFile: 'data/01_list_of_files.tsv',
+    countFile: 'data/01_file_count.txt',
   },
 }
 
@@ -44,28 +46,34 @@ fs.readdirSync(config[env].sourceDir).forEach((filename) => {
       // Only process files that have an id (which are the
       // ones that go to the site
       if (matterObject.data.id) {
-        console.log(`-- ${matterObject.data.id}`)
-        reportDetails.siteFileCount += 1
-
         ///////////////////////////////////////////////////
-        // Find all the links via the regex match
-        const matches = matterObject.content.match(regex)
+        // Only include files that are published
+        if (
+          matterObject.data.status.match(/^(archive|scratch|draft|published)$/)
+        ) {
+          console.log(`-- ${matterObject.data.id}`)
+          reportDetails.siteFileCount += 1
 
-        ///////////////////////////////////////////////////
-        // If there are any links, setup the details and
-        // push them onto the main array
-        if (matches) {
-          matches.forEach((link) => {
-            console.log(link)
-            reportDetails.linkCount += 1
-            const details = [
-              matterObject.data.id,
-              matterObject.data.date,
-              filename,
-              link,
-            ]
-            theLinks.push(details)
-          })
+          ///////////////////////////////////////////////////
+          // Find all the links via the regex match
+          const matches = matterObject.content.match(regex)
+
+          ///////////////////////////////////////////////////
+          // If there are any links, setup the details and
+          // push them onto the main array
+          if (matches) {
+            matches.forEach((link) => {
+              console.log(link)
+              reportDetails.linkCount += 1
+              const details = [
+                matterObject.data.id,
+                matterObject.data.date,
+                filename,
+                link,
+              ]
+              theLinks.push(details)
+            })
+          }
         }
       }
     }
@@ -79,6 +87,17 @@ fs.writeFile(
       return linkDetails.join('\t')
     })
     .join('\n'),
+  (err) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+  }
+)
+
+fs.writeFile(
+  config[env].countFile,
+  `Total Published Files: ${reportDetails.siteFileCount}`,
   (err) => {
     if (err) {
       console.error(err)
